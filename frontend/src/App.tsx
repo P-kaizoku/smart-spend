@@ -7,7 +7,7 @@ import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
-    <main className="min-h-screen  bg-gradient-to-b from-neutral-400/80 via-neutral-200 to-neutral-400/80">
+    <main className="min-h-screen  bg-neutral-300">
       <BrowserRouter>
         <Navbar />
         <Routes>

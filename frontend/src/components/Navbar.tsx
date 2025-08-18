@@ -17,7 +17,10 @@ const Navbar = () => {
   return (
     <nav className="fixed inset-x-0 border-b border-neutral-500 top-0 max-w-3xl  mx-auto p-4 ">
       <div className=" flex justify-between items-center">
-        <h1 className="font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-b from-neutral-900 to-neutral-500 cursor-default">
+        <h1
+          onClick={() => navigate("/")}
+          className="font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-b from-neutral-900 to-neutral-500 cursor-pointer"
+        >
           SS
         </h1>
         <ul className="flex gap-3 items-center">
