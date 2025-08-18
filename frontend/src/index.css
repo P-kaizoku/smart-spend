@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+@theme {
+  --font-coe: "Google Sans Code", monospace;
+}
