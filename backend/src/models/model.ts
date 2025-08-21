@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema({
   email: {
@@ -38,3 +38,8 @@ const expenseSchema = new Schema({
     required: true,
   },
 });
+
+const User = mongoose.model("User", userSchema);
+const Expense = mongoose.model("Expense", expenseSchema);
+
+export { User, Expense };
