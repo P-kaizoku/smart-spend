@@ -4,34 +4,42 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  if (!user) {
-    res.json({
-      message: "User not found",
+    if (!user) {
+      res.status(201).json({
+        message: "User not found",
+      });
+      return;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      res.status(201).json({
+        message: "Invalid password",
+      });
+      return;
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
+      expiresIn: "7d",
     });
-    return;
-  }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-
-  if (!isPasswordValid) {
     res.json({
-      message: "Invalid password",
+      message: "Login successful",
+      user,
+      token,
     });
-    return;
+  } catch (error) {
+    console.error("Login failed:", error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
   }
-
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-    expiresIn: "7d",
-  });
-
-  res.json({
-    message: "Login successful",
-    user,
-  });
 };
 
 export const signup = async (req: Request, res: Response) => {
@@ -48,6 +56,17 @@ export const signup = async (req: Request, res: Response) => {
 
   const newUser = new User({ email, username, password: hashedPassword });
   await newUser.save();
+  const token = jwt.sign(
+    { id: newUser._id },
+    process.env.JWT_SECRET as string,
+    {
+      expiresIn: "7d",
+    }
+  );
 
-  res.json({ message: "User created successfully", user: newUser });
+  res.json({
+    message: "User created successfully",
+    user: newUser,
+    token: token,
+  });
 };
