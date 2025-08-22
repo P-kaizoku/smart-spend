@@ -3,6 +3,7 @@ import cors from "cors";
 import { config } from "dotenv";
 import mongoose from "mongoose";
 import authRouter from "./routes/authRoutes";
+import userRouter from "./routes/userRoutes";
 config();
 
 const PORT = process.env.PORT;
@@ -22,6 +23,7 @@ app.use(express.json());
 
 //routes
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 mongoose
   .connect(MONGO_URI)
